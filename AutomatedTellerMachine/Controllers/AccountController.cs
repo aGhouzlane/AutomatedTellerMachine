@@ -149,12 +149,19 @@ namespace AutomatedTellerMachine.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    var db = new ApplicationDbContext();
+                    var checkingAccount = new CheckingAccount { AccountNumber = "0001234567", FirstName = model.FirstName,
+                    LastName = model.LastName, Balance = 5000, ApplicationUserId = user.Id};
+                    db.CheckingAccounts.Add(checkingAccount);
+                    db.SaveChanges();
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
