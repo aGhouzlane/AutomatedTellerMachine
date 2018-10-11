@@ -229,6 +229,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\TransferViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CheckingAccountService.cs" />
     <Compile Include="Startup.cs" />
@@ -307,6 +308,10 @@
     <Content Include="Views\Home\_ContactThanks.cshtml" />
     <Content Include="Views\CheckingAccount\Statement.cshtml" />
     <Content Include="Views\Transaction\QuickCash.cshtml" />
+    <Content Include="Views\Transaction\Withdrawal.cshtml" />
+    <Content Include="Views\Transaction\_TransferForm.cshtml" />
+    <Content Include="Views\Transaction\_TransferSuccess.cshtml" />
+    <Content Include="Views\Transaction\Transfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
