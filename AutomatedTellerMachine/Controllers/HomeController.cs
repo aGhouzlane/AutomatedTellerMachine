@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutomatedTellerMachine.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace AutomatedTellerMachine.Controllers
 {
@@ -18,6 +19,11 @@ namespace AutomatedTellerMachine.Controllers
             var userId = User.Identity.GetUserId();
             var checkingAccountId = db.CheckingAccounts.Where(c => c.ApplicationUserId == userId).First().Id;
             ViewBag.CheckingAccountId = checkingAccountId;
+
+            var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = manager.FindById(userId);
+            ViewBag.Pin = user.Pin;
+
             return View();
         }
 
@@ -30,9 +36,17 @@ namespace AutomatedTellerMachine.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.TheMessage = "Having troubles? Please send us a message.";
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Contact(string message)
+        {
+            ViewBag.TheMessage = "Thanks, we got your message!";
+
+            return PartialView("_ContactThanks");
         }
     }
 }

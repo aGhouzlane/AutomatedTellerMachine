@@ -1,4 +1,5 @@
 ﻿using AutomatedTellerMachine.Models;
+using AutomatedTellerMachine.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,5 +30,23 @@ namespace AutomatedTellerMachine.Controllers
             }
             return View();
         }
+
+        public ActionResult QuickCash(int checkingAccountId, decimal amount)
+        {
+            var sourceCheckingAccount = db.CheckingAccounts.Find(checkingAccountId);
+            var balance = sourceCheckingAccount.Balance;
+            if (balance < amount)
+            {
+                return View("QuickCashInsufficientFunds");
+            }
+            db.Transactions.Add(new Transaction { CheckingAccountId = checkingAccountId, Amount = -amount });
+            db.SaveChanges();
+
+            var service = new CheckingAccountService(db);
+            service.UpdateBalance(checkingAccountId);
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }
